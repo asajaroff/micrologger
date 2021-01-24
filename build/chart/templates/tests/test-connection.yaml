@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "micrologger.fullname" . }}-test-connection"
+  labels:
+    {{- include "micrologger.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "micrologger.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
